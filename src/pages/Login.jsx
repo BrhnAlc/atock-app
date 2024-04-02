@@ -13,7 +13,10 @@ import { Formik} from "formik"
 
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const loginSchema ={
+
+  }
 
   return (
     <Container maxWidth="lg">
@@ -51,29 +54,45 @@ const Login = () => {
           >
             Login
           </Typography>
+           <Formik 
+          // ! initialValues: Formun başlangıç değerlerini belirtir. Bu, formdaki alanların başlangıç değerlerini tanımlar.
+          // validationSchema: Formdaki alanların doğrulanmasını sağlar. Bu, formun gönderilmeden önce belirli doğrulama kurallarını kontrol eder
+          //! Aşağıdaki örnekte, form gönderildikten sonra formun sıfırlanması (action.resetForm()) ve gönderim durumunun (action.setSubmitting(false)) güncellenmesi sağlanmıştır.
 
-          <Box
-            component="form"
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-          >
-            <TextField
-              label="Email"
-              name="email"
-              id="email"
-              type="email"
-              variant="outlined"
-            />
-            <TextField
-              label="password"
-              name="password"
-              id="password"
-              type="password"
-              variant="outlined"
-            />
-            <Button variant="contained" type="submit">
-              Submit
-            </Button>
-          </Box>
+           initialValues={{email:"" , password:""}}
+           validationSchema={loginSchema}
+           onSubmit={(values,action)=>{
+            // TODO login(values) POST işlemi
+            action.resetForm()
+            action.setSubmitting(false)
+           }}
+           >
+           {()=>(
+             <Box
+             component="form"
+             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+           >
+             <TextField
+               label="Email"
+               name="email"
+               id="email"
+               type="email"
+               variant="outlined"
+             />
+             <TextField
+               label="password"
+               name="password"
+               id="password"
+               type="password"
+               variant="outlined"
+             />
+             <Button variant="contained" type="submit">
+               Submit
+             </Button>
+           </Box>
+           )}
+           </Formik>
+          
 
           <Box sx={{ textAlign: "center", mt: 2 }}>
             <Link to="/register">Do you have not an account?</Link>
@@ -90,4 +109,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login;
