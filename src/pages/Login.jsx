@@ -1,23 +1,29 @@
-import Avatar from "@mui/material/Avatar"
-import Container from "@mui/material/Container"
-import Grid from "@mui/material/Grid"
-import Typography from "@mui/material/Typography"
-import LockIcon from "@mui/icons-material/Lock"
-import image from "../assets/result.svg"
-import { Link, useNavigate } from "react-router-dom"
-import Box from "@mui/material/Box"
-import TextField from "@mui/material/TextField"
-import { Button } from "@mui/material"
-import { Formik} from "formik"
 
-
+import { Avatar, Container, Grid, Typography, Box, TextField, Button } from "@mui/material";
+import LockIcon from "@mui/icons-material/Lock";
+import { Link, useNavigate } from "react-router-dom";
+import { Formik, Form } from "formik";
+import { object, string } from 'yup';
+import image from "../assets/result.svg";
 
 const Login = () => {
   const navigate = useNavigate();
-  const loginSchema ={
+  
+  // Harici validasyon şeması
+  // Bu kod bir form doğrulama şemasını tanımlar. yup paketinin object() ve string() fonksiyonları kullanılarak bir doğrulama şeması oluşturulmuştur.
 
-  }
-
+  const loginSchema = object().shape({
+    email: string()
+    .email("Please enter a valid email")
+    .required("Email field is required"),
+    password: string()
+    .required("Password field is required")
+    .min(8,"At least 8 characters must be entered")
+    .max(16,"Maximum 16 characters must be entered")
+    .matches(/\d+/,"Must contain at least one digit")
+    .matches(/[A-Z]/,"Must contain at least one uppercase letter")
+  });
+  
   return (
     <Container maxWidth="lg">
       <Grid
@@ -54,48 +60,59 @@ const Login = () => {
           >
             Login
           </Typography>
-           <Formik 
-          // ! initialValues: Formun başlangıç değerlerini belirtir. Bu, formdaki alanların başlangıç değerlerini tanımlar.
+          <Formik 
+          
+           // ! initialValues: Formun başlangıç değerlerini belirtir. Bu, formdaki alanların başlangıç değerlerini tanımlar.
           // validationSchema: Formdaki alanların doğrulanmasını sağlar. Bu, formun gönderilmeden önce belirli doğrulama kurallarını kontrol eder
           //! Aşağıdaki örnekte, form gönderildikten sonra formun sıfırlanması (action.resetForm()) ve gönderim durumunun (action.setSubmitting(false)) güncellenmesi sağlanmıştır.
 
-           initialValues={{email:"" , password:""}}
-           validationSchema={loginSchema}
-           onSubmit={(values,action)=>{
-            // TODO login(values) POST işlemi
-            action.resetForm()
-            action.setSubmitting(false)
-           }}
-           >
-           {()=>(
-             <Box
-             component="form"
-             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-           >
-             <TextField
-               label="Email"
-               name="email"
-               id="email"
-               type="email"
-               variant="outlined"
-             />
-             <TextField
-               label="password"
-               name="password"
-               id="password"
-               type="password"
-               variant="outlined"
-             />
-             <Button variant="contained" type="submit">
-               Submit
-             </Button>
-           </Box>
-           )}
-           </Formik>
-          
+            initialValues={{email:"", password:""}}
+            validationSchema={loginSchema}
+            onSubmit={(values, {resetForm, setSubmitting}) => {
+              // TODO: login(values) POST işlemi
+              resetForm();
+              setSubmitting(false);
+            }}
+          >
+            {({handleChange, handleBlur, values, touched, errors, isSubmitting}) => (
+              <Form>
+                <Box
+                  sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                >
+                  <TextField
+                    label="Email"
+                    name="email"
+                    id="email"
+                    type="email"
+                    variant="filled"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
+                    error={touched.email && Boolean(errors.email)}
+                    helperText={touched.email && errors.email}
+                  />
+                  <TextField
+                    label="password"
+                    name="password"
+                    id="password"
+                    type="password"
+                    variant="filled"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                    error={touched.password && Boolean(errors.password)}
+                    helperText={touched.password && errors.password}
+                  />
+                  <Button variant="contained" type="submit" disabled={isSubmitting}>
+                    Submit
+                  </Button>
+                </Box>
+              </Form>
+            )}
+          </Formik>
 
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Link to="/register">Do you have not an account?</Link>
+            <Link to="/register"> Don't have an account? Sign up</Link>
           </Box>
         </Grid>
 
@@ -106,7 +123,7 @@ const Login = () => {
         </Grid>
       </Grid>
     </Container>
-  )
-}
+  );
+};
 
 export default Login;
