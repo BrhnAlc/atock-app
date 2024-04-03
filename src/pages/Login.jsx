@@ -1,10 +1,12 @@
 
 import { Avatar, Container, Grid, Typography, Box, TextField, Button } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { object, string } from 'yup';
 import image from "../assets/result.svg";
+import { login } from "../service/authApiCall";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -68,8 +70,9 @@ const Login = () => {
 
             initialValues={{email:"", password:""}}
             validationSchema={loginSchema}
-            onSubmit={(values, {resetForm, setSubmitting}) => {
+            onSubmit={(values,{resetForm, setSubmitting}) => {
               // TODO: login(values) POST işlemi
+              login(values)
               resetForm();
               setSubmitting(false);
             }}
@@ -127,3 +130,7 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+//  {resetForm, setSubmitting}
