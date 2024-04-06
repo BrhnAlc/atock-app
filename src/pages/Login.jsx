@@ -9,7 +9,7 @@ import image from "../assets/result.svg";
 import { login } from "../service/authApiCall";
 
 const Login = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate("/");
   
   // Harici validasyon şeması
   // Bu kod bir form doğrulama şemasını tanımlar. yup paketinin object() ve string() fonksiyonları kullanılarak bir doğrulama şeması oluşturulmuştur.
@@ -72,7 +72,7 @@ const Login = () => {
             validationSchema={loginSchema}
             onSubmit={(values,{resetForm, setSubmitting}) => {
               // TODO: login(values) POST işlemi
-              login(values)
+              login(values,navigate)
               resetForm();
               setSubmitting(false);
             }}
