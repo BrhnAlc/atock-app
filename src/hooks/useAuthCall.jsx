@@ -15,13 +15,13 @@ const useAuthCall=() =>{
 
  const login = async (userData) => {
   
-
-  const BASE_URL = "https://21105.fullstack.clarusway.com"
+console.log(import.meta.env.VITE_API_KEY);
+  
 
   dispatch(fetchStart())
   try {
     const { data } = await axios.post(
-      `${BASE_URL}/account/auth/login/`,
+      `${import.meta.env.VITE_BASE_URL}/account/auth/login/`,
       userData
     )
     dispatch(loginSuccess(data))
@@ -38,17 +38,16 @@ const useAuthCall=() =>{
 const logout = async () => {
   
 
-  const BASE_URL = "https://21105.fullstack.clarusway.com"
 
   dispatch(fetchStart())
   try {
      await axios.post(
-      `${BASE_URL}/account/auth/logout/`)
+      `${import.meta.env.VITE_BASE_URL}/account/auth/logout/`)
     dispatch(logoutSuccess())
     toastSuccessNotify("logout islemi basarili")
     navigate("/")
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
     dispatch(fetchFail())
     toastErrorNotify(error.response.data.non_field_errors[0])
 
