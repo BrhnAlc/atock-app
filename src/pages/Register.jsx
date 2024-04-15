@@ -47,8 +47,14 @@ const Register = () => {
           >
             Register
           </Typography>
-
           <Formik
+          
+          // ! initialValues: Formun başlangıç değerlerini belirtir. Bu, formdaki alanların başlangıç değerlerini tanımlar.
+
+          // validationSchema: Formdaki alanların doğrulanmasını sağlar. Bu, formun gönderilmeden önce belirli doğrulama kurallarını kontrol eder
+          
+          //! Aşağıdaki örnekte, form gönderildikten sonra formun sıfırlanması (action.resetForm()) ve gönderim durumunun (action.setSubmitting(false)) güncellenmesi sağlanmıştır.
+
             initialValues={{
               username: "",
               first_name: "",

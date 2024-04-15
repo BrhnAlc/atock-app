@@ -7,8 +7,9 @@ import { Formik, Form } from "formik";
 import { object, string } from 'yup';
 import image from "../assets/result.svg";
 import { login } from "../service/authApiCall";
-
+import useAuthCall from "../hooks/useAuthCall"
 const Login = () => {
+  const {login} = useAuthCall()
   const navigate = useNavigate("/");
   
   // Harici validasyon şeması
@@ -65,7 +66,9 @@ const Login = () => {
           <Formik 
           
            // ! initialValues: Formun başlangıç değerlerini belirtir. Bu, formdaki alanların başlangıç değerlerini tanımlar.
+
           // validationSchema: Formdaki alanların doğrulanmasını sağlar. Bu, formun gönderilmeden önce belirli doğrulama kurallarını kontrol eder
+          
           //! Aşağıdaki örnekte, form gönderildikten sonra formun sıfırlanması (action.resetForm()) ve gönderim durumunun (action.setSubmitting(false)) güncellenmesi sağlanmıştır.
 
             initialValues={{email:"", password:""}}
