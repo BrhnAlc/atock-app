@@ -2,7 +2,7 @@ import axios from "axios"
 import {toastErrorNotify , toastSuccessNotify } from "../helper/ToastNotify"
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { fetchFail, fetchStart, loginSuccess, logoutSuccess } from "../features/authSlice"
+import { fetchFail, fetchStart, loginSuccess, logoutSuccess, registerSuccess } from "../features/authSlice"
 
 
 //? Bir hook sadece bir react component ve bir custom hook icersinde cagrilabilir. Bir Js fonksiyonu icerisinde hook cagiralamaz.
@@ -15,7 +15,8 @@ const useAuthCall=() =>{
 
  const login = async (userData) => {
   
-console.log(import.meta.env.VITE_API_KEY);
+// console.log(import.meta.env.VITE_API_KEY);
+// console.log(import.meta.env.VITE_API_KEY_PROD);
   
 
   dispatch(fetchStart())
@@ -54,7 +55,29 @@ const logout = async () => {
   }
 }
 
-return {login, logout}
+
+const register = async (userData) => {
+  
+  
+  
+    dispatch(fetchStart())
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/account/register/`,
+        userData
+      )
+      dispatch(registerSuccess(data))
+      toastSuccessNotify("register islemi basarili")
+      navigate("/stock")
+    } catch (error) {
+      console.log(error)
+      dispatch(fetchFail())
+      toastErrorNotify("register islemi basarısız")
+  
+    }
+  }
+
+return {login, logout , register}
 }
 
 export default useAuthCall;
