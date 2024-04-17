@@ -6,8 +6,11 @@ import {  useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { object, string } from 'yup';
 import image from "../assets/result.svg";
-import { login } from "../service/authApiCall";
 import useAuthCall from "../hooks/useAuthCall"
+
+
+
+
 const Login = () => {
   const {login} = useAuthCall()
   const navigate = useNavigate("/");
@@ -53,7 +56,7 @@ const Login = () => {
               height: 40,
             }}
           >
-            <LockIcon size="30" />
+            <LockIcon sx={{fontSize:30}}  />
           </Avatar>
           <Typography
             variant="h4"
