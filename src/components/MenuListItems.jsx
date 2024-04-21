@@ -50,7 +50,7 @@ const icons =[
       {
         title: "Admin Panel",
         icon: <SupervisorAccountIcon />,
-        url: "https://21105.fullstack.clarusway.com/",
+        url: "https://21105.fullstack.clarusway.com/admin",
       },
 ]
 
@@ -60,11 +60,22 @@ const MenuListItems = () => {
     <div>
          <List>
         {icons.map((item, index) => (
-          <ListItem key={index} disablePadding onClick={()=>navigate(item.url)}>
+          <ListItem 
+          key={index} 
+          disablePadding 
+          onClick={()=>{
+            item.url.includes("http" || "www")  
+            ? window.open(item.url , "blank")
+            :navigate(item.url)
+          }}
+          sx={{color:"white", "&:hover":{color:"red"},
+        "&:hover.muiSvgIcon-root":{color:"red"}
+      }}
+          >
             <ListItemButton>
-              <ListItemIcon>
+              <ListItemIcon sx={{color:"white","&:hover":{color:"red"}}}>
                 {item.icon}
-              </ListItemIcon>
+              </ListItemIcon >
               <ListItemText primary={item.title} />
             </ListItemButton>
           </ListItem>
