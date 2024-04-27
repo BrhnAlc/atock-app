@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { fetchFail, fetchStart ,getFirmsSuccess} from "../features/authSlice"
+import { fetchFail, fetchStart ,getFirmsSuccess,getSalesSuccess} from "../features/authSlice"
 import axios from "axios"
 
 
@@ -23,7 +23,24 @@ const useStockCall = () => {
           console.error("Firms fetching error:", error) // Hata durumunda kullanıcıya geri bildirim sağlamak için konsola loglayın
         }
       }
-  return {getFirms}
+
+      const getSales = async () => {
+        
+        dispatch(fetchStart())
+
+
+        try {
+          const { data } = await axios(`${import.meta.VITE_BASE_URL}/stock/sales/`,
+           {
+            headers: { Authorization: `Token ${token}` },
+          })
+          dispatch(getSalesSuccess(data))
+        } catch (error) {
+          dispatch(fetchFail())
+          console.error("Sales fetching error:", error) // Hata durumunda kullanıcıya geri bildirim sağlamak için konsola loglayın
+        }
+      }
+  return {getFirms , getSales}
 }
 
-export default useStockCall
+export default useStockCall;

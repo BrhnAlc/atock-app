@@ -4,15 +4,15 @@ import useStockCall from "../hooks/useStockCall"
 import { useSelector } from 'react-redux';
 
 const Firms = () => {
-
-  const {getFirms}=useStockCall();
-  const {firms} = useSelector();
- 
+  const { getFirms } = useStockCall();
+  const firms = useSelector(state => state.firms); // Hangi state'i seçmek istediğinizi belirtin
 
   useEffect(() => {
-    getFirms()
-  }, []) // Boş dependency array kullanarak sadece bir kez çağrılmasını sağlayın
+    getFirms();
+  }, [getFirms]); // Dependency array içine getFirms ekleyin
+
   console.log(firms);
+  
   return (
     <div>
       <Typography variant="h4" color="error" mb={3}>
@@ -24,4 +24,7 @@ const Firms = () => {
 }
 
 export default Firms;
+
+
+
 

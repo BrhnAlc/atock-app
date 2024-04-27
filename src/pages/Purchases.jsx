@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 
 const Purchases = () => {
 
-  useEffect(() => {
-  getFirms()
-  }, [])
+  // useEffect(() => {
+  // getFirms()
+  // }, [])
   
   return (
     <div>Purchases</div>
