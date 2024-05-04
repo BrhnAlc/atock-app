@@ -10,9 +10,9 @@ import RegisterForm, { registerSchema } from "../components/RegisterForm"
 import { Formik } from "formik"
 import useAuthCall from "../hooks/useAuthCall"
 
-
 const Register = () => {
-  const {register} = useAuthCall()
+  const { register } = useAuthCall()
+
   return (
     <Container maxWidth="lg">
       <Grid
@@ -50,25 +50,18 @@ const Register = () => {
           >
             Register
           </Typography>
+
           <Formik
-          
-          // ! initialValues: Formun başlangıç değerlerini belirtir. Bu, formdaki alanların başlangıç değerlerini tanımlar.
-
-          // validationSchema: Formdaki alanların doğrulanmasını sağlar. Bu, formun gönderilmeden önce belirli doğrulama kurallarını kontrol eder
-          
-          //! Aşağıdaki örnekte, form gönderildikten sonra formun sıfırlanması (action.resetForm()) ve gönderim durumunun (action.setSubmitting(false)) güncellenmesi sağlanmıştır.
-
             initialValues={{
               username: "",
               first_name: "",
               last_name: "",
               email: "",
               password: "",
-              password2 : "",
             }}
             validationSchema={registerSchema}
             onSubmit={(values, actions) => {
-              register({...values, password2:values.password})
+              register({ ...values, password2: values.password })
               actions.resetForm()
               actions.setSubmitting(false)
             }}

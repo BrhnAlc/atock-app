@@ -1,46 +1,97 @@
-import { useDispatch, useSelector } from "react-redux"
-import { fetchFail, fetchStart ,getFirmsSuccess,getSalesSuccess} from "../features/authSlice"
-import axios from "axios"
-
+import {
+  fetchFail,
+  fetchStart,
+  getStockSuccess,
+  getProdCatBrandsSuccess,
+} from "../features/stockSlice"
+import { useDispatch } from "react-redux"
+import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify"
+import useAxios from "./useAxios"
 
 const useStockCall = () => {
-    const { token } = useSelector((state) => state.auth)
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
+  const { axiosWithToken } = useAxios()
 
-    const getFirms = async () => {
-        
-        dispatch(fetchStart())
+  const getStockData = async (url) => {
+    dispatch(fetchStart())
+    try {
+      const { data } = await axiosWithToken(`/stock/${url}/`)
+      dispatch(getStockSuccess({ data, url }))
+    } catch (error) {
+      dispatch(fetchFail())
+      console.log(error)
+    }
+  }
 
+  const deleteStockData = async (url, id) => {
+    dispatch(fetchStart())
+    try {
+      await axiosWithToken.delete(`/stock/${url}/${id}/`)
+      toastSuccessNotify(`${url} succesfuly deleted`)
+      getStockData(url)
+    } catch (error) {
+      dispatch(fetchFail())
+      toastErrorNotify(`${url} can not be deleted`)
+      console.log(error)
+    }
+  }
 
-        try {
-          const { data } = await axios(`${import.meta.VITE_BASE_URL}/stock/firms/`,
-           {
-            headers: { Authorization: `Token ${token}` },
-          })
-          dispatch(getFirmsSuccess(data))
-        } catch (error) {
-          dispatch(fetchFail())
-          console.error("Firms fetching error:", error) // Hata durumunda kullanıcıya geri bildirim sağlamak için konsola loglayın
-        }
-      }
+  const postStockData = async (url, info) => {
+    dispatch(fetchStart())
+    try {
+      await axiosWithToken.post(`/stock/${url}/`, info)
+      toastSuccessNotify(`${url} succesfuly posted`)
+      getStockData(url)
+    } catch (error) {
+      dispatch(fetchFail())
+      toastErrorNotify(`${url} can not be posted`)
+      console.log(error)
+    }
+  }
 
-      const getSales = async () => {
-        
-        dispatch(fetchStart())
+  const putStockData = async (url, info) => {
+    dispatch(fetchStart())
+    try {
+      await axiosWithToken.put(`/stock/${url}/${info.id}/`, info)
+      toastSuccessNotify(`${url} succesfuly updated`)
+      getStockData(url)
+    } catch (error) {
+      dispatch(fetchFail())
+      toastErrorNotify(`${url} can not be updated`)
+      console.log(error)
+    }
+  }
+  // ? Products, categories ve brands isteklerinin Promise.all ile es zamanli alinmasi.
+  const getProdCatBrands = async () => {
+    dispatch(fetchStart())
+    try {
+      const [products, categories, brands] = await Promise.all([
+        axiosWithToken.get("stock/products/"),
+        axiosWithToken.get("stock/categories/"),
+        axiosWithToken.get("stock/brands/"),
+      ])
 
+      dispatch(
+        getProdCatBrandsSuccess([
+          products?.data,
+          categories?.data,
+          brands?.data,
+        ])
+      )
+    } catch (error) {
+      console.log(error)
+      dispatch(fetchFail())
+      toastErrorNotify(`Data can not be fetched`)
+    }
+  }
 
-        try {
-          const { data } = await axios(`${import.meta.VITE_BASE_URL}/stock/sales/`,
-           {
-            headers: { Authorization: `Token ${token}` },
-          })
-          dispatch(getSalesSuccess(data))
-        } catch (error) {
-          dispatch(fetchFail())
-          console.error("Sales fetching error:", error) // Hata durumunda kullanıcıya geri bildirim sağlamak için konsola loglayın
-        }
-      }
-  return {getFirms , getSales}
+  return {
+    getStockData,
+    deleteStockData,
+    postStockData,
+    putStockData,
+    getProdCatBrands,
+  }
 }
 
-export default useStockCall;
+export default useStockCall

@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import Purchases from './../pages/Purchases';
-import Firms from "../pages/Firms";
-import Products from './../pages/Products';
+
 
 // Redux Toolkit'ten createSlice fonksiyonunu alarak bir slice oluşturuyorsunuz.
 const stockSlice = createSlice({
@@ -28,17 +26,19 @@ const stockSlice = createSlice({
       state.error = false; // Hata durumunu false yapıyoruz.
     },
 
-    // getFirmsSuccess reducer'ı, firmaları başarıyla aldığınızda kullanılıyor.
-    getFirmsSuccess: (state, { payload }) => {
-      state.loading = false; // Yükleme durumunu false yapıyoruz.
-      state.firms = payload; // Gelen firmaları state içindeki firms dizisine atıyoruz.
+    getStockSuccess: (state, { payload }) => {
+      state.loading = false
+      state[payload.url] = payload.data
     },
 
-    // getBrandsSuccess reducer'ı, markaları başarıyla aldığınızda kullanılıyor.
-    getBrandsSuccess: (state, { payload }) => {
-      state.loading = false; // Yükleme durumunu false yapıyoruz.
-      state.brands = payload; // Gelen markaları state içindeki brands dizisine atıyoruz.
+    // ? Products, categories ve brands state'lerini güncelleyen action fonks.
+    getProdCatBrandsSuccess: (state, { payload }) => {
+      state.loading = false
+      state.products = payload[0]
+      state.categories = payload[1]
+      state.brands = payload[2]
     },
+    
 
     // fetchFail reducer'ı, bir hata durumunda kullanılıyor.
     fetchFail: (state) => {
@@ -51,9 +51,9 @@ const stockSlice = createSlice({
 // Slice'tan action'ları ve reducer'ları dışa aktarıyoruz.
 export const {
   fetchStart,
-  getFirmsSuccess,
   fetchFail,
-  getBrandsSuccess
+  getStockSuccess,
+  getProdCatBrandsSuccess,
 } = stockSlice.actions
 
 // Oluşturduğumuz reducer'ı dışa aktarıyoruz.
