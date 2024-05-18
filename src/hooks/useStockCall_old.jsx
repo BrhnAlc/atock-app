@@ -1,12 +1,4 @@
-import axios from "axios"
-import { fetchFail, fetchStart, getStockSuccess } from "../features/stockSlice"
-import { useDispatch, useSelector } from "react-redux"
-import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify"
-
-const useStockCall = () => {
-  
-
-  const { token } = useSelector((state) => state.auth)
+const { token } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
   const getStockData = async (url) => {

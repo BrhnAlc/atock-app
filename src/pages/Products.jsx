@@ -4,7 +4,7 @@ import Button from "@mui/material/Button"
 import { useSelector } from "react-redux"
 import useStockCall from "../hooks/useStockCall"
 import ProductModal from "../components/ProductModal"
-import ProductTable from "../components/Producttable"
+import ProductTable from "../components/ProductTable"
 
 const Products = () => {
   const { getStockData, getProdCatBrands } = useStockCall()
@@ -16,7 +16,7 @@ const Products = () => {
 
   useEffect(() => {
     // getStockData("products")
-    // getStockData("categories")
+    // getStockData("categori")
     // getStockData("brands")
 
     //! Promise.all ile es zamanli istek atilan fonks.

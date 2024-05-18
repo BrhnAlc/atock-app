@@ -8,7 +8,7 @@ import FirmCard from "../components/FirmCard"
 import FirmModal from "../components/FirmModal"
 
 const Firms = () => {
- 
+  
 
   const { getStockData } = useStockCall()
   const { firms } = useSelector((state) => state.stock)
@@ -28,7 +28,7 @@ const Firms = () => {
   }
 
   useEffect(() => {
-    // getFirms()
+  
     getStockData("firms")
   }, [])
 

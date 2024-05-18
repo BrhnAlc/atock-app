@@ -66,9 +66,9 @@ const useStockCall = () => {
     dispatch(fetchStart())
     try {
       const [products, categories, brands] = await Promise.all([
-        axiosWithToken.get("stock/products/"),
-        axiosWithToken.get("stock/categories/"),
-        axiosWithToken.get("stock/brands/"),
+        axiosWithToken("stock/products/"),
+        axiosWithToken("stock/categories/"),
+        axiosWithToken("stock/brands/"),
       ])
 
       dispatch(
